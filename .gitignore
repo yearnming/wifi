@@ -8,8 +8,8 @@
 *.so
 *.dylib
 .idea
-
-wifi.xml
+*.xml
+# wifi.xml
 # Test binary, built with `go test -c`
 *.test
 
