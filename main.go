@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-
+	// 测试提交
 	//gologger.DefaultLogger.SetTimestamp(true, levels.LevelInfo)
 	//gologger.DefaultLogger.SetTimestamp(true, levels.LevelError)
 	var start = time.Now()
