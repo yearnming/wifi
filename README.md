@@ -39,6 +39,18 @@ PwdCharDict = []byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 ## Run
 
-```go
-go run main.go
+```shell
+go run main.go -h
+wifi 自动尝试密码
+
+Usage:
+C:\Users\test\Desktop\wifi1.exe [flags]
+
+Flags:
+INPUT:
+-l, -dict string  wifi密码字典
+
+
+使用示例:
+go run main.go -l common.txt
 ```
