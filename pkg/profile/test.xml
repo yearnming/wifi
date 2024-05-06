@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
+	<name>iPhone 12 Pro Max</name>
+	<SSIDConfig>
+		<SSID>
+			<hex>6950686F6E652031322050726F204D6178</hex>
+			<name>iPhone 12 Pro Max</name>
+		</SSID>
+	</SSIDConfig>
+	<connectionType>ESS</connectionType>
+	<connectionMode>auto</connectionMode>
+	<MSM>
+		<security>
+			<authEncryption>
+				<authentication>WPA3SAE</authentication>
+				<encryption>AES</encryption>
+				<useOneX>false</useOneX>
+			</authEncryption>
+			<sharedKey>
+				<keyType>passPhrase</keyType>
+				<protected>true</protected>
+				<keyMaterial>01000000D08C9DDF0115D1118C7A00C04FC297EB010000002FFC8699CE021C4DBAAEEDEAFAEB580F000000000200000000001066000000010000200000006A7A8773D855C4FD9BC41835BE975D2746569E469338EB232E4B8DD7C84DDAF1000000000E80000000020000200000005566E76B5592BFF3136FB2D13E18FACC80C14AE6AFBC3F27290A1F6F2C873041100000004D41510D93FB47C03779C7D7F24EEB6540000000B76985884CC9D7990B93691526DCD6266AA52C10F9FC7EEB4185900851957E811D9CEC9E8E15B5BB173FBFBC42BEE104DB0AB32FAB9F6AF52C0AEA6748C70439</keyMaterial>
+			</sharedKey>
+		</security>
+	</MSM>
+	<MacRandomization xmlns="http://www.microsoft.com/networking/WLAN/profile/v3">
+		<enableRandomization>false</enableRandomization>
+		<randomizationSeed>99881417</randomizationSeed>
+	</MacRandomization>
+</WLANProfile>
