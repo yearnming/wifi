@@ -8,7 +8,7 @@
 *.so
 *.dylib
 .idea
-dict.txt
+
 wifi.xml
 # Test binary, built with `go test -c`
 *.test
