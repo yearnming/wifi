@@ -20,7 +20,6 @@ builds:
       goarch: 'arm64'
 
   binary: '{{ .ProjectName }}'
-  main: main.go
   ldflags: '-s -w'
 
 archives:
