@@ -1,8 +1,8 @@
-package main
+package config
 
 import (
 	_ "embed"
 )
 
 //go:embed common.txt
-var dictfile string
+var Dictfile string

@@ -6,6 +6,7 @@ import (
 	"github.com/projectdiscovery/goflags"
 	"github.com/projectdiscovery/gologger"
 	logutil "github.com/projectdiscovery/utils/log"
+	"github.com/yearnming/wifi/pkg/config"
 	"github.com/yearnming/wifi/pkg/setting"
 	"github.com/yearnming/wifi/pkg/util"
 	"github.com/yearnming/wifi/pkg/wifi"
@@ -132,7 +133,7 @@ func ParseOptions() *Options {
 // validateOptions 验证传递的配置选项
 func (options *Options) validateOptions() error {
 	if options.Dict == "" {
-		options.WifiDict = options.LoadWifiDict(dictfile)
+		options.WifiDict = options.LoadWifiDict(config.Dictfile)
 		gologger.Info().Msgf("使用默认字典")
 
 		//return errors.New("没有提供参数")
