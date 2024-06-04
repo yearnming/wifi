@@ -180,6 +180,6 @@ func (options *Options) LoadWifiDict(path string) []string {
 	//= path
 	//gologger.Info().Msgf("字典：%v", path)
 	Dict := strings.Split(path, "\r\n")
-	//gologger.Info().Msgf("字典：%v", Dict)
+	gologger.Info().Msgf("字典字数：%v", len(Dict))
 	return Dict
 }
