@@ -3,6 +3,10 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"os"
+	"strings"
+	"time"
+
 	"github.com/projectdiscovery/goflags"
 	"github.com/projectdiscovery/gologger"
 	logutil "github.com/projectdiscovery/utils/log"
@@ -10,9 +14,6 @@ import (
 	"github.com/yearnming/wifi/pkg/setting"
 	"github.com/yearnming/wifi/pkg/util"
 	"github.com/yearnming/wifi/pkg/wifi"
-	"os"
-	"strings"
-	"time"
 )
 
 func main() {
@@ -175,11 +176,19 @@ func (options *Options) validateOptions() error {
 }
 
 // LoadWebfingerprint 加载内置WiFi密码字典
-func (options *Options) LoadWifiDict(path string) []string {
-	//data := []byte(path)
-	//= path
-	//gologger.Info().Msgf("字典：%v", path)
-	Dict := strings.Split(path, "\r\n")
-	//gologger.Info().Msgf("字典字数：%v", len(Dict))
+// func (options *Options) LoadWifiDict(path string) []string {
+// 	//data := []byte(path)
+// 	//= path
+// 	//gologger.Info().Msgf("字典：%v", path)
+// 	Dict := strings.Split(path, "\r\n")
+// 	gologger.Info().Msgf("字典字数：%v", len(Dict))
+// 	return Dict
+// }
+
+// LoadWifiDict 加载内置WiFi密码字典
+func (options *Options) LoadWifiDict(dictContent string) []string {
+	// 根据操作系统的换行符进行分割
+	Dict := strings.Split(strings.ReplaceAll(dictContent, "\r\n", "\n"), "\n")
+	gologger.Info().Msgf("字典字数：%v", len(Dict))
 	return Dict
 }
