@@ -2,6 +2,7 @@ package wifi
 
 import (
 	"context"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"os/exec"
@@ -83,41 +84,6 @@ func (wc *WIFI) connectCtx(ctx context.Context) error {
 	return nil
 }
 
-// // Connect Connect
-// func (wc *WIFI) Connect() (stat Stat, err error) {
-// 	err = wc.addProfile()
-// 	if err != nil {
-// 		return
-// 	}
-
-// 	err = wc.connect()
-// 	if err != nil {
-// 		return
-// 	}
-
-// 	for {
-// 		<-time.After(setting.CheckStatDuration)
-
-// 		stat, err := GetWIFIStat()
-// 		if err != nil {
-// 			return "", err
-// 		}
-
-// 		if stat == Disconnected || stat == Connected {
-// 			return stat, nil
-// 		}
-// 	}
-// }
-
-// func (wc *WIFI) connect() error {
-// 	cmd := exec.Command("netsh", "wlan", "connect", "name="+wc.Ssid)
-// 	out, err := cmd.CombinedOutput()
-// 	if err != nil {
-// 		logger.Info(out)
-// 	}
-// 	return err
-// }
-
 // DeleteProfile Delete Profile
 func (wc *WIFI) DeleteProfile() error {
 	cmd := exec.Command("netsh", "wlan", "delete", "profile", "name="+wc.Ssid)
@@ -130,8 +96,9 @@ func (wc *WIFI) DeleteProfile() error {
 
 // C:\ProgramData\Microsoft\Wlansvc\Profiles\Interfaces
 func (wc *WIFI) addProfile() error {
-	profileXML := fmt.Sprintf(setting.ProfileTmpl, wc.Ssid, wc.Ssid, Manual, wc.Password)
+	profileXML := fmt.Sprintf(setting.ProfileTmpl, wc.Ssid, hex.EncodeToString([]byte(wc.Ssid)), wc.Ssid, Manual, wc.Password)
 
+	// gologger.Info().Msgf("[%s]hex:[%s]", wc.Ssid, hex.EncodeToString([]byte(wc.Ssid)))
 	//fmt.Println("配置文件: ", profileXML)
 	profileXMLPath := setting.ProfileXMLPath
 
@@ -139,12 +106,19 @@ func (wc *WIFI) addProfile() error {
 		return err
 	}
 	defer os.Remove(profileXMLPath)
-
+	// >>> 新增：打印即将导入的配置文件内容
+	// if xmlBytes, e := os.ReadFile(profileXMLPath); e == nil {
+	// 	fmt.Println("--- 待导入的 WiFi 配置文件内容 ---")
+	// 	fmt.Println(string(xmlBytes))
+	// 	fmt.Println("--- 配置文件内容结束 ---")
+	// }
+	// <<< 新增结束
 	cmd := exec.Command("netsh", "wlan", "add", "profile", "filename="+profileXMLPath, "user=all")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		logger.Info(out)
 	}
 
+	// gologger.Info().Msgf("SSID: [%s],Password: [%s],Path: [%s]", wc.Ssid, wc.Password, profileXMLPath)
 	return err
 }

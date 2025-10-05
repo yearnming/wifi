@@ -11,6 +11,22 @@ import (
 	"golang.org/x/text/encoding/simplifiedchinese"
 )
 
+// classifyResult 把 netsh 中文状态转成三分类
+func ClassifyResult(stat Stat) string {
+	switch stat {
+	case setting.ConnectedStatText: // "已连接"
+		return "success"
+	case setting.AssociatingStatText, // "关联"
+		setting.AuthenticatingStatText: // "正在验证"
+		return "abnormal"
+	case setting.DisconnectingStatText, // "正在断开连接"
+		setting.DisconnectedStatText: // "已断开连接"
+		return "failed"
+	default:
+		return "failed" // 其余未知状态先算失败
+	}
+}
+
 // Stat 状态
 type Stat string
 

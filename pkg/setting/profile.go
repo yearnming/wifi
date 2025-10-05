@@ -10,6 +10,7 @@ var (
 <name>%s</name>
 <SSIDConfig>
 	<SSID>
+		<hex>%s</hex>
 		<name>%s</name>
 	</SSID>
 </SSIDConfig>
